@@ -1,0 +1,71 @@
+﻿<Window x:Class="VideoRecordingTool.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:VideoRecordingTool"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="400" Width="600"
+        ShowInTaskbar="False" Visibility="Hidden"
+        AllowsTransparency="True" 
+        Topmost="True" WindowStyle="None"
+        ResizeMode="CanResizeWithGrip"
+        Margin="20"
+        Name="Main"
+        
+        BorderBrush="Red" BorderThickness="1"
+        MouseLeftButtonDown="MouseLeftButton_OnDown"
+        MouseLeftButtonUp="MouseLeftButton_OnUp"
+        >
+    <Grid>
+        <!--<Button Name="CloseBtn" Click="CloseImg_OnMouseDown" Width="36" Height="36" 
+                VerticalAlignment="Top" HorizontalAlignment="Right" Margin="20" BorderThickness="0" Cursor="Hand">
+            <Button.Content>
+                <Image Source="Images/hide.png" />
+            </Button.Content>
+            <Button.Background>
+                <ImageBrush ImageSource="Images/hide.png" />
+            </Button.Background>
+        </Button>-->
+
+        <Button Name="CloseBtn" Click="CloseImg_OnMouseDown" Width="36" Height="36"
+                VerticalAlignment="Top" HorizontalAlignment="Right" Margin="20" BorderThickness="0" Cursor="Hand"
+                BorderBrush="{x:Null}" Background="{x:Null}">
+            <Button.Content>
+                <Image Source="Images/hide.png" />
+            </Button.Content>
+            <Button.Style>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <Border Background="{TemplateBinding Background}">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="{x:Null}"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+        </Button>
+
+        <Button Name="StartBtn" Click="StartBtn_OnClick" Content="Start" Cursor="Hand" 
+                  Width="85" Height="45" Foreground="White" FontSize="18">
+            <Button.BorderBrush>
+                <SolidColorBrush></SolidColorBrush>
+            </Button.BorderBrush>
+            <Button.Background>
+                <SolidColorBrush Color="Red" Opacity="0.8"></SolidColorBrush>
+            </Button.Background>
+        </Button>
+        <Label Name="CounterLbl" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed" Foreground="Red" FontSize="70px" Content="3" />
+    </Grid>
+     <Window.Background>
+        <SolidColorBrush Color="White"></SolidColorBrush>
+    </Window.Background>
+</Window>
