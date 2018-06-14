@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
-namespace VideoRecordingTool
+namespace ScreenRecordingTool
 {
     public static class WindowLocator
     {

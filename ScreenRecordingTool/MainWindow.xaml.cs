@@ -2,13 +2,12 @@
 using System.Diagnostics;
 using System.Drawing;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Threading;
 
-namespace VideoRecordingTool
+namespace ScreenRecordingTool
 {
 	/// <summary>
 	/// Interaction logic for MainWindow.xaml

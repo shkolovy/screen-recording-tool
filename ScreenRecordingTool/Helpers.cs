@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace VideoRecordingTool
+namespace ScreenRecordingTool
 {
     public static class Helpers
     {

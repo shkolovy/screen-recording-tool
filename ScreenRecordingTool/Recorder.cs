@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
-using System.Threading.Tasks;
 using Accord.Video;
 using Accord.Video.FFMPEG;
 
-namespace VideoRecordingTool
+namespace ScreenRecordingTool
 {
 	public sealed class Recorder
 	{
@@ -20,7 +18,7 @@ namespace VideoRecordingTool
 		private Rectangle _position;
 
 		private const int FRAME_RATE = 10;
-		private const int BIT_RATE = 1000000;
+		private const int BIT_RATE = 1200000;
 		private const string FILE_CONTAINER = "mp4";
 
 		//yellow, half transparent
@@ -122,20 +120,10 @@ namespace VideoRecordingTool
 							}
 						}
 
-						//DrawWatermark(graphics, bitmap.Width, bitmap.Height);
+						DrawWatermark(graphics, bitmap.Width, bitmap.Height);
 					}
 
 					_videoWriter.WriteVideoFrame(bitmap);
-
-					//if (_firstFrameTime != null)
-					//{
-					//	_videoWriter.WriteVideoFrame(bitmap, DateTime.Now - _firstFrameTime.Value);
-					//}
-					//else
-					//{
-					//	_videoWriter.WriteVideoFrame(bitmap);
-					//	_firstFrameTime = DateTime.Now;
-					//}
 				}
 			}
 		}

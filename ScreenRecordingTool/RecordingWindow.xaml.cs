@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Threading;
 
-namespace VideoRecordingTool
+namespace ScreenRecordingTool
 {
     /// <summary>
     /// Interaction logic for RecordingWindow.xaml

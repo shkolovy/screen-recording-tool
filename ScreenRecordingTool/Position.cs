@@ -1,4 +1,4 @@
-﻿namespace VideoRecordingTool
+﻿namespace ScreenRecordingTool
 {
     public sealed class Position
     {

@@ -6,7 +6,7 @@ using System.Windows;
 //add logger
 //add button on maximaze
 
-namespace VideoRecordingTool
+namespace ScreenRecordingTool
 {
     /// <summary>
     /// Interaction logic for App.xaml
@@ -14,8 +14,9 @@ namespace VideoRecordingTool
     public partial class App : Application
     {
         private System.Windows.Forms.NotifyIcon _trayIcon;
+	    private KeyboardHook keyboardhook;
 
-        protected override void OnStartup(StartupEventArgs e)
+		protected override void OnStartup(StartupEventArgs e)
         {
             //only one instance can be running
             if (Process.GetProcessesByName(Process.GetCurrentProcess().ProcessName).Length > 1)
@@ -32,17 +33,50 @@ namespace VideoRecordingTool
             _trayIcon = new System.Windows.Forms.NotifyIcon();
             _trayIcon.DoubleClick += (s, args) => Tray_OnDoubleClick();
             _trayIcon.Visible = true;
-            _trayIcon.Text = "Use double click (or F5) to Start or Stop recording";
+            _trayIcon.Text = "Use double click to Start or Stop recording";
 
             CreateContextMenu();
             HandleTrayItems(false);
 
-            ShowBalloonMessage("Select area and press \"Start\" for recoring.");
+            ShowBalloonMessage("Double click on the Icon, select area and press \"Start\" for recoring. (Or press F3)");
+
+	        AddHotkeys();
         }
 
-        private void ShowBalloonMessage(string message)
+	    private void AddHotkeys()
+	    {
+		    keyboardhook = new KeyboardHook(true);
+
+		    keyboardhook.AddHookedKey(System.Windows.Forms.Keys.F3);
+		    keyboardhook.KeyUp += new System.Windows.Forms.KeyEventHandler(KeyboardHook_KeyUp);
+		    keyboardhook.Hook();
+		}
+
+	    private void KeyboardHook_KeyUp(object sender, System.Windows.Forms.KeyEventArgs e)
+	    {
+		    if (MainWindow.IsVisible)
+		    {
+			    if (((MainWindow)Current.MainWindow).IsRecording)
+			    {
+				    Stop();
+			    }
+			    else
+			    {
+					((MainWindow)Current.MainWindow).StartRecording();
+				}
+			}
+		    else
+		    {
+				MainWindow.Show();
+			}
+
+			//MessageBox.Show("xxxxxxx....");
+			e.Handled = true;
+	    }
+
+		private void ShowBalloonMessage(string message)
         {
-            _trayIcon.ShowBalloonTip(5000, "Screen Recorder", message, System.Windows.Forms.ToolTipIcon.Info);
+            _trayIcon.ShowBalloonTip(2000, "Screen Recorder", message, System.Windows.Forms.ToolTipIcon.Info);
         }
 
         private void CreateContextMenu()
@@ -58,15 +92,15 @@ namespace VideoRecordingTool
             _trayIcon.ContextMenuStrip.Items.Add(new System.Windows.Forms.ToolStripSeparator());
             _trayIcon.ContextMenuStrip.Items.Add("Exit").Click += (s, e) => ExitApp();
 
-            _trayIcon.ContextMenuStrip.Items[0].Image = VideoRecordingTool.Properties.Resources.dot;
-            _trayIcon.ContextMenuStrip.Items[1].Image = VideoRecordingTool.Properties.Resources.stop;
+            _trayIcon.ContextMenuStrip.Items[0].Image = ScreenRecordingTool.Properties.Resources.dot;
+            _trayIcon.ContextMenuStrip.Items[1].Image = ScreenRecordingTool.Properties.Resources.stop;
         }
 
         public void HandleTrayItems(bool isRecording)
         {
             _trayIcon.ContextMenuStrip.Items[0].Enabled = !isRecording;
             _trayIcon.ContextMenuStrip.Items[1].Enabled = isRecording;
-            _trayIcon.Icon = isRecording ? VideoRecordingTool.Properties.Resources.stop_icon : VideoRecordingTool.Properties.Resources.main_icon;
+            _trayIcon.Icon = isRecording ? ScreenRecordingTool.Properties.Resources.stop_icon : ScreenRecordingTool.Properties.Resources.main_icon;
         }
 
         public void Tray_OnDoubleClick()
@@ -106,7 +140,7 @@ namespace VideoRecordingTool
 
         private void GoToFolder()
         {
-            string path = VideoRecordingTool.Properties.Settings.Default.SaveToPath;
+            string path = ScreenRecordingTool.Properties.Settings.Default.SaveToPath;
             bool directoryExists = Directory.Exists(path);
 
             if (!directoryExists)
@@ -122,12 +156,17 @@ namespace VideoRecordingTool
         private void Stop()
         {
             ((MainWindow)Current.MainWindow).StopRecording();
-            ShowBalloonMessage("Converting... the video will appear shortly");
-        }
+            ShowBalloonMessage("Your video is ready.");
+	        Helpers.OpenFolder(ScreenRecordingTool.Properties.Settings.Default.SaveToPath);
+		}
 
         private void ExitApp()
         {
-            Application.Current.Shutdown();
-        }
+	        _trayIcon.Icon = null;
+			Application.Current.Shutdown();
+
+	        this.keyboardhook.KeyUp -= KeyboardHook_KeyUp;
+	        this.keyboardhook.Dispose();
+		}
     }
 }
