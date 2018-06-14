@@ -15,6 +15,7 @@ namespace ScreenRecordingTool
     {
         private System.Windows.Forms.NotifyIcon _trayIcon;
 	    private KeyboardHook keyboardhook;
+	    private System.Windows.Forms.Keys _hotKey = System.Windows.Forms.Keys.F3;
 
 		protected override void OnStartup(StartupEventArgs e)
         {
@@ -38,7 +39,7 @@ namespace ScreenRecordingTool
             CreateContextMenu();
             HandleTrayItems(false);
 
-            ShowBalloonMessage("Double click on the Icon, select area and press \"Start\" for recoring. (Or press F3)");
+            ShowBalloonMessage($"Double click on the Icon, select area and press \"Start\" for recoring. (Or press {_hotKey.ToString()})");
 
 	        AddHotkeys();
         }
@@ -47,7 +48,7 @@ namespace ScreenRecordingTool
 	    {
 		    keyboardhook = new KeyboardHook(true);
 
-		    keyboardhook.AddHookedKey(System.Windows.Forms.Keys.F3);
+		    keyboardhook.AddHookedKey(_hotKey);
 		    keyboardhook.KeyUp += new System.Windows.Forms.KeyEventHandler(KeyboardHook_KeyUp);
 		    keyboardhook.Hook();
 		}
@@ -70,7 +71,6 @@ namespace ScreenRecordingTool
 				MainWindow.Show();
 			}
 
-			//MessageBox.Show("xxxxxxx....");
 			e.Handled = true;
 	    }
 
@@ -83,11 +83,11 @@ namespace ScreenRecordingTool
         {
             //todo: add labels to resources
             _trayIcon.ContextMenuStrip = new System.Windows.Forms.ContextMenuStrip();
-            _trayIcon.ContextMenuStrip.Items.Add("Capture").Click += (s, e) => Start();
-            _trayIcon.ContextMenuStrip.Items.Add("Stop").Click += (s, e) => Stop();
+            _trayIcon.ContextMenuStrip.Items.Add($"Capture ({_hotKey.ToString()})").Click += (s, e) => Start();
+            _trayIcon.ContextMenuStrip.Items.Add($"Stop ({_hotKey.ToString()})").Click += (s, e) => Stop();
 
-            //_trayIcon.ContextMenuStrip.Items.Add("Settings").Click += (s, e) => Settings();
-            _trayIcon.ContextMenuStrip.Items.Add("Go to folder").Click += (s, e) => GoToFolder();
+	        _trayIcon.ContextMenuStrip.Items.Add("Go to folder").Click += (s, e) => GoToFolder();
+			_trayIcon.ContextMenuStrip.Items.Add("Settings").Click += (s, e) => Settings();
             _trayIcon.ContextMenuStrip.Items.Add("About").Click += (s, e) => About();
             _trayIcon.ContextMenuStrip.Items.Add(new System.Windows.Forms.ToolStripSeparator());
             _trayIcon.ContextMenuStrip.Items.Add("Exit").Click += (s, e) => ExitApp();
@@ -128,14 +128,12 @@ namespace ScreenRecordingTool
 
         public void About()
         {
-            //todo: implement
-            MessageBox.Show("About....");
+            MessageBox.Show("arshkolo :)");
         }
 
         public void Settings()
         {
-            //todo: implement
-            MessageBox.Show("Settings....");
+            MessageBox.Show("All setting are in ScreenRecordingTool.exe.config");
         }
 
         private void GoToFolder()
