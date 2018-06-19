@@ -9,14 +9,21 @@
         ShowInTaskbar="False" 
         AllowsTransparency="True" 
         Topmost="True" WindowStyle="None"
-        ResizeMode="NoResize" 
-        >
+        ResizeMode="NoResize">
     <Grid>
         <StackPanel Orientation="Horizontal">
             <Image Source="Images/recording.png" Width="12" Height="12" VerticalAlignment="Center" />
             <Label Content="REC" Foreground="White" FontSize="14" FontWeight="Bold" VerticalAlignment="Center" />
             <Label Name="TimerLbl" Foreground="Red" FontSize="14" VerticalAlignment="Center" />
-        </StackPanel>
+			<Button Name="StopBtn" Content="■ Stop Recording (F3)" Padding="10 0" Foreground="AliceBlue" Cursor="Hand" FontSize="12" Click="Stop_Click">
+				<Button.BorderBrush>
+					<SolidColorBrush></SolidColorBrush>
+				</Button.BorderBrush>
+				<Button.Background>
+					<SolidColorBrush Color="Red" Opacity="0.8"></SolidColorBrush>
+				</Button.Background>
+			</Button>
+		</StackPanel>
     </Grid>
     <Window.Background>
         <SolidColorBrush Opacity="0" Color="White"></SolidColorBrush>

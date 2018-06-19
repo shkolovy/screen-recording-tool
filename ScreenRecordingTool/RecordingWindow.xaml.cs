@@ -14,7 +14,8 @@ namespace ScreenRecordingTool
         public RecordingWindow()
         {
             InitializeComponent();
-        }
+	        StopBtn.Focusable = false;
+		}
 
         public void StartTimer()
         {
@@ -30,5 +31,10 @@ namespace ScreenRecordingTool
         {
             _timer.Stop();
         }
-    }
+
+		private void Stop_Click(object sender, RoutedEventArgs e)
+		{
+			((App)Application.Current).Stop();
+		}
+	}
 }

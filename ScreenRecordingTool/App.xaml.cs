@@ -157,7 +157,7 @@ namespace ScreenRecordingTool
             }
         }
 
-        private void Stop()
+        public void Stop()
         {
             ((MainWindow)Current.MainWindow).StopRecording();
             ShowBalloonMessage("Your video is ready.");

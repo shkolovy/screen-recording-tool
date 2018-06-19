@@ -17,18 +17,8 @@
         MouseLeftButtonDown="MouseLeftButton_OnDown"
         MouseLeftButtonUp="MouseLeftButton_OnUp"
         >
-    <Grid>
-        <!--<Button Name="CloseBtn" Click="CloseImg_OnMouseDown" Width="36" Height="36" 
-                VerticalAlignment="Top" HorizontalAlignment="Right" Margin="20" BorderThickness="0" Cursor="Hand">
-            <Button.Content>
-                <Image Source="Images/hide.png" />
-            </Button.Content>
-            <Button.Background>
-                <ImageBrush ImageSource="Images/hide.png" />
-            </Button.Background>
-        </Button>-->
-
-        <Button Name="CloseBtn" Click="CloseImg_OnMouseDown" Width="36" Height="36"
+	<Grid>
+		<Button Name="CloseBtn" Click="CloseImg_OnMouseDown" Width="36" Height="36"
                 VerticalAlignment="Top" HorizontalAlignment="Right" Margin="20" BorderThickness="0" Cursor="Hand"
                 BorderBrush="{x:Null}" Background="{x:Null}">
             <Button.Content>
