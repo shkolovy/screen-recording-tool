@@ -29,7 +29,7 @@ namespace ScreenRecordingTool
 
             base.OnStartup(e);
             MainWindow = new MainWindow();
-            MainWindow.Hide();
+            HideCaptureWindow();
 
             _trayIcon = new System.Windows.Forms.NotifyIcon();
             _trayIcon.DoubleClick += (s, args) => Tray_OnDoubleClick();
@@ -68,7 +68,7 @@ namespace ScreenRecordingTool
 			}
 		    else
 		    {
-				MainWindow.Show();
+				ShowCaptureWindow();
 			}
 
 			e.Handled = true;
@@ -83,7 +83,7 @@ namespace ScreenRecordingTool
         {
             //todo: add labels to resources
             _trayIcon.ContextMenuStrip = new System.Windows.Forms.ContextMenuStrip();
-            _trayIcon.ContextMenuStrip.Items.Add($"Capture ({_hotKey.ToString()})").Click += (s, e) => Start();
+            _trayIcon.ContextMenuStrip.Items.Add($"Capture ({_hotKey.ToString()})").Click += (s, e) => ShowCaptureWindow();
             _trayIcon.ContextMenuStrip.Items.Add($"Stop ({_hotKey.ToString()})").Click += (s, e) => Stop();
 
 	        _trayIcon.ContextMenuStrip.Items.Add("Go to folder").Click += (s, e) => GoToFolder();
@@ -112,21 +112,27 @@ namespace ScreenRecordingTool
                     Stop();
                 }
                 {
-                    MainWindow.Hide();
+	                HideCaptureWindow();
                 }
             }
             else
             {
-                MainWindow.Show();
+	            ShowCaptureWindow();
             }
         }
 
-        private void Start()
+        private void ShowCaptureWindow()
         {
             MainWindow.Show();
+	        ((MainWindow) Current.MainWindow).StartBtn.Focus();
         }
 
-        public void About()
+	    private void HideCaptureWindow()
+	    {
+		    MainWindow.Hide();
+	    }
+
+		public void About()
         {
             MessageBox.Show("arshkolo :)");
         }

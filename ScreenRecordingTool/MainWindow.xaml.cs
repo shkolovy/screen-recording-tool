@@ -38,7 +38,6 @@ namespace ScreenRecordingTool
 			_recorder = new Recorder();
 			InitializeComponent();
 			ToggleOverlay(true);
-			BindHotKeys();
 
 			WindowLocator.Start();
 			WindowLocator.MouseAction += new EventHandler(OnMouseAction);
@@ -47,23 +46,6 @@ namespace ScreenRecordingTool
 
 			_inited = true;
 		}
-
-		private void BindHotKeys()
-		{
-			
-		}
-
-		//private void StartStopCommandExecuted(object sender, ExecutedRoutedEventArgs e)
-		//{
-		//	if (IsRecording)
-		//	{
-		//		StopRecording();
-		//	}
-		//	else
-		//	{
-		//		StartRecording();
-		//	}
-		//}
 
 		private void ToggleRecordingWindow(bool show)
 		{
