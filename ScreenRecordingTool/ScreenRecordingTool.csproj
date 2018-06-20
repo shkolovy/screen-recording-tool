@@ -136,9 +136,6 @@
     <Resource Include="Images\hide.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\stop_icon.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\main_icon.ico" />
   </ItemGroup>
   <ItemGroup>
@@ -146,6 +143,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\recording.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\stop_icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Accord.3.8.0\build\Accord.targets" Condition="Exists('..\packages\Accord.3.8.0\build\Accord.targets')" />

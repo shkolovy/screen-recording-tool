@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:ScreenRecordingTool"
         mc:Ignorable="d"
         Title="MainWindow" Height="400" Width="600"
-        ShowInTaskbar="False" Visibility="Hidden"
+        ShowInTaskbar="False" Visibility="Visible"
         AllowsTransparency="True" 
         Topmost="True" WindowStyle="None"
         ResizeMode="CanResizeWithGrip"
@@ -16,36 +16,24 @@
         BorderBrush="Red" BorderThickness="1"
         MouseLeftButtonDown="MouseLeftButton_OnDown"
         MouseLeftButtonUp="MouseLeftButton_OnUp"
+		SizeChanged="Window_SizeChanged"
         >
-	<Grid>
-		<Button Name="CloseBtn" Click="CloseImg_OnMouseDown" Width="36" Height="36"
-                VerticalAlignment="Top" HorizontalAlignment="Right" Margin="20" BorderThickness="0" Cursor="Hand"
-                BorderBrush="{x:Null}" Background="{x:Null}">
-            <Button.Content>
-                <Image Source="Images/hide.png" />
-            </Button.Content>
-            <Button.Style>
-                <Style TargetType="{x:Type Button}">
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="{x:Type Button}">
-                                <Border Background="{TemplateBinding Background}">
-                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                </Border>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                    <Style.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="{x:Null}"/>
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </Button.Style>
-        </Button>
 
-        <Button Name="StartBtn" Click="StartBtn_OnClick" Content="Start" Cursor="Hand" 
-                  Width="85" Height="45" Foreground="White" FontSize="18">
+	<Grid>
+		<Label Name="ResolutionLbl" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0" Foreground="WhiteSmoke" FontSize="10" />
+
+		<Button Name="CloseBtn" Click="CloseImg_OnMouseDown" Height="26"
+		        VerticalAlignment="Top" HorizontalAlignment="Right" Margin="10" Padding="10 0"
+		        BorderThickness="0" Cursor="Hand"
+		        FontSize="11" 
+		        Content="Hide window">
+			<Button.Background>
+				<SolidColorBrush Color="#77B3D4" Opacity="0.8"></SolidColorBrush>
+			</Button.Background>
+		</Button>
+		
+		<Button Name="StartBtn" Click="StartBtn_OnClick" Content="▶ Start" Cursor="Hand" 
+                  Height="45" Foreground="White" FontSize="18" Padding="20 0" HorizontalAlignment="Center">
             <Button.BorderBrush>
                 <SolidColorBrush></SolidColorBrush>
             </Button.BorderBrush>
@@ -53,6 +41,9 @@
                 <SolidColorBrush Color="Red" Opacity="0.8"></SolidColorBrush>
             </Button.Background>
         </Button>
+
+		<Label Name="InfoLbl" Content="Click any window to capture it." HorizontalAlignment="Left" VerticalAlignment="Bottom" Foreground="WhiteSmoke" FontWeight="Bold" FontSize="20" FontFamily="Segoe UI Semilight Italic"></Label>
+
         <Label Name="CounterLbl" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed" Foreground="Red" FontSize="70px" Content="3" />
     </Grid>
      <Window.Background>

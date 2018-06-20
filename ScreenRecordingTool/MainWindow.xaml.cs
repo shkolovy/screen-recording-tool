@@ -38,6 +38,7 @@ namespace ScreenRecordingTool
 			_recorder = new Recorder();
 			InitializeComponent();
 			ToggleOverlay(true);
+			SetResolutionLbl();
 
 			WindowLocator.Start();
 			WindowLocator.MouseAction += new EventHandler(OnMouseAction);
@@ -45,6 +46,16 @@ namespace ScreenRecordingTool
 			_recordingWindow = new RecordingWindow();
 
 			_inited = true;
+		}
+
+		private void SetResolutionLbl()
+		{
+			ResolutionLbl.Content = $"{Math.Ceiling(Width)} ✕ {Math.Ceiling(Height)}";
+		}
+
+		private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+		{
+			SetResolutionLbl();
 		}
 
 		private void ToggleRecordingWindow(bool show)
@@ -87,8 +98,6 @@ namespace ScreenRecordingTool
 
 			IntPtr windowsPtr = WindowLocator.WindowFromPoint(p);
 
-			//Debug.WriteLine(string.Format("last: {0} new: {1}", last, windowsPtr.ToInt32()));
-
 			if (CaptureWindowPtr != windowsPtr)
 			{
 				const int maxChars = 256;
@@ -117,20 +126,6 @@ namespace ScreenRecordingTool
 				}
 			}
 		}
-
-		//protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
-		//{
-		//    base.OnPropertyChanged(e);
-
-		//    if (e.Property == Window.WindowStateProperty)
-		//    {
-		//        if ((WindowState)e.NewValue == WindowState.Maximized)
-		//        {
-		//            WindowState = WindowState.Normal;
-		//            WindowLocator.MoveWindow(CaptureWindowPtr, 0, 0, (int)_workArea.Right, (int)_workArea.Bottom, true);
-		//        }
-		//    }
-		//}
 
 		public void MouseLeftButton_OnUp(object sender, MouseEventArgs e)
 		{
@@ -170,6 +165,8 @@ namespace ScreenRecordingTool
 			Main.ResizeMode = ResizeMode.CanResizeWithGrip;
 			StartBtn.Visibility = Visibility.Visible;
 			CloseBtn.Visibility = Visibility.Visible;
+			ResolutionLbl.Visibility = Visibility.Visible;
+			InfoLbl.Visibility = Visibility.Visible;
 			ToggleOverlay(true);
 			((App)Application.Current).HandleTrayItems(false);
 
@@ -187,6 +184,8 @@ namespace ScreenRecordingTool
 			Main.ResizeMode = ResizeMode.NoResize;
 			StartBtn.Visibility = Visibility.Hidden;
 			CloseBtn.Visibility = Visibility.Hidden;
+			ResolutionLbl.Visibility = Visibility.Hidden;
+			InfoLbl.Visibility = Visibility.Hidden;
 			ShowCountdown();
 		}
 
@@ -236,19 +235,16 @@ namespace ScreenRecordingTool
 
 					ToggleRecordingWindow(true);
 
-					RunVideoProcesses();
+					_recorder.Start(GetRecordingCoordinates());
 				}
-				time = time.Add(TimeSpan.FromSeconds(-1));
+				else
+				{
+					time = time.Add(TimeSpan.FromSeconds(-1));
+				}
 			};
 
 			_timer = new DispatcherTimer(new TimeSpan(0, 0, 1), DispatcherPriority.Normal, callback, Application.Current.Dispatcher);
 			_timer.Start();
-		}
-
-		//todo: remove convertor
-		private void RunVideoProcesses()
-		{
-			_recorder.Start(GetRecordingCoordinates());
 		}
 	}
 }

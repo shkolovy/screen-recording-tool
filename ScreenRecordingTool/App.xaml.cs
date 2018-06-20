@@ -14,7 +14,7 @@ namespace ScreenRecordingTool
     public partial class App : Application
     {
         private System.Windows.Forms.NotifyIcon _trayIcon;
-	    private KeyboardHook keyboardhook;
+	    private KeyboardHook _keyboardhook;
 	    private System.Windows.Forms.Keys _hotKey = System.Windows.Forms.Keys.F3;
 
 		protected override void OnStartup(StartupEventArgs e)
@@ -22,14 +22,12 @@ namespace ScreenRecordingTool
             //only one instance can be running
             if (Process.GetProcessesByName(Process.GetCurrentProcess().ProcessName).Length > 1)
             {
-                MessageBox.Show("Instance already running");
+                MessageBox.Show("It's already running. Just check it in the tray");
                 Application.Current.Shutdown();
                 return;
             }
 
             base.OnStartup(e);
-            MainWindow = new MainWindow();
-            HideCaptureWindow();
 
             _trayIcon = new System.Windows.Forms.NotifyIcon();
             _trayIcon.DoubleClick += (s, args) => Tray_OnDoubleClick();
@@ -46,11 +44,11 @@ namespace ScreenRecordingTool
 
 	    private void AddHotkeys()
 	    {
-		    keyboardhook = new KeyboardHook(true);
+		    _keyboardhook = new KeyboardHook(true);
 
-		    keyboardhook.AddHookedKey(_hotKey);
-		    keyboardhook.KeyUp += new System.Windows.Forms.KeyEventHandler(KeyboardHook_KeyUp);
-		    keyboardhook.Hook();
+		    _keyboardhook.AddHookedKey(_hotKey);
+		    _keyboardhook.KeyUp += new System.Windows.Forms.KeyEventHandler(KeyboardHook_KeyUp);
+		    _keyboardhook.Hook();
 		}
 
 	    private void KeyboardHook_KeyUp(object sender, System.Windows.Forms.KeyEventArgs e)
@@ -169,8 +167,8 @@ namespace ScreenRecordingTool
 	        _trayIcon.Icon = null;
 			Application.Current.Shutdown();
 
-	        this.keyboardhook.KeyUp -= KeyboardHook_KeyUp;
-	        this.keyboardhook.Dispose();
+	        this._keyboardhook.KeyUp -= KeyboardHook_KeyUp;
+	        this._keyboardhook.Dispose();
 		}
     }
 }
