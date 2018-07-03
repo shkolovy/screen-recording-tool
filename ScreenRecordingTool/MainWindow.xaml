@@ -20,7 +20,14 @@
         >
 
 	<Grid>
-		<Label Name="ResolutionLbl" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0" Foreground="WhiteSmoke" FontSize="10" />
+		<Button Name="CaptureWindowBtn" Content="Capture Window (off)" HorizontalAlignment="Left" FontSize="11" Padding="10 0" Height="26"
+		        BorderThickness="0" Cursor="Hand" VerticalAlignment="Top" Foreground="WhiteSmoke" Margin="10" Click="CaptureWindowBtn_OnClick">
+			<Button.Background>
+				<SolidColorBrush Color="CadetBlue" Opacity="0.8"></SolidColorBrush>
+			</Button.Background>
+		</Button>
+		
+		<Label Name="ResolutionLbl" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0" Foreground="WhiteSmoke" FontSize="10" />
 
 		<Button Name="CloseBtn" Click="CloseImg_OnMouseDown" Height="26"
 		        VerticalAlignment="Top" HorizontalAlignment="Right" Margin="10" Padding="10 0"
@@ -42,7 +49,7 @@
             </Button.Background>
         </Button>
 
-		<Label Name="InfoLbl" Content="Click any window to capture it." HorizontalAlignment="Left" VerticalAlignment="Bottom" Foreground="WhiteSmoke" FontWeight="Bold" FontSize="20" FontFamily="Segoe UI Semilight Italic"></Label>
+		<Label Name="InfoLbl" Visibility="Hidden" Content="Click any window to capture it." HorizontalAlignment="Left" VerticalAlignment="Bottom" Foreground="WhiteSmoke" FontWeight="Bold" FontSize="20" FontFamily="Segoe UI Semilight Italic"></Label>
 
         <Label Name="CounterLbl" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed" Foreground="Red" FontSize="70px" Content="3" />
     </Grid>

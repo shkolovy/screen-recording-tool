@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
@@ -55,9 +56,81 @@ namespace ScreenRecordingTool
             public int Bottom;
         }
 
+	    // Delegate to filter which windows to include 
+	    public delegate bool EnumWindowsProc(IntPtr hWnd, IntPtr lParam);
 
-        ////////////////Mouse hooks
-        public static event EventHandler MouseAction = delegate { };
+	    public enum WindowStyles : long
+	    {
+		    Child = 0x40000000,
+		    ToolWindow = 0x00000080,
+		    AppWindow = 0x00040000,
+		    SizeBox = 0x00040000L
+	    }
+
+	    public enum GetWindowLongValue
+	    {
+		    Style = -16,
+		    ExStyle = -20
+	    }
+
+	    public enum GetWindowEnum { Owner = 4 }
+
+		[DllImport("user32.dll")]
+		public static extern bool EnumWindows(EnumWindowsProc enumProc, IntPtr lParam);
+
+	    [DllImport("user32.dll")]
+	    public static extern bool IsWindow(IntPtr hWnd);
+
+	    [DllImport("user32.dll", CharSet = CharSet.Unicode)]
+	    private static extern int GetWindowTextLength(IntPtr hWnd);
+
+		[DllImport("user32.dll")]
+	    public static extern bool IsWindowVisible(IntPtr hWnd);
+
+	    [DllImport("user32.dll")]
+	    public static extern WindowStyles GetWindowLong(IntPtr hWnd, GetWindowLongValue nIndex);
+
+	    [DllImport("user32.dll")]
+	    public static extern IntPtr GetWindow(IntPtr hWnd, GetWindowEnum uCmd);
+
+		public static IEnumerable<IntPtr> FindWindows()
+	    {
+		    var windows = new List<IntPtr>();
+
+		    EnumWindows(delegate (IntPtr wnd, IntPtr param)
+		    {
+			    windows.Add(wnd);
+				return true;
+		    }, IntPtr.Zero);
+
+		    var visibleWindows = new List<IntPtr>();
+
+			foreach (IntPtr wnd in windows)
+		    {
+			    if (!IsWindow(wnd) || !IsWindowVisible(wnd) || GetWindowTextLength(wnd) == 0)
+			    {
+				    continue;
+			    }
+
+			    if (GetWindowLong(wnd, GetWindowLongValue.ExStyle).HasFlag(WindowStyles.AppWindow))
+			    {
+				    if (GetWindow(wnd, GetWindowEnum.Owner) != IntPtr.Zero ||
+				        GetWindowLong(wnd, GetWindowLongValue.ExStyle).HasFlag(WindowStyles.ToolWindow) ||
+				        GetWindowLong(wnd, GetWindowLongValue.Style).HasFlag(WindowStyles.Child))
+				    {
+					    continue;
+				    }
+			    }
+
+			    visibleWindows.Add(wnd);
+			}
+
+			return visibleWindows;
+	    }
+
+
+		////////////////Mouse hooks
+		public static event EventHandler MouseAction = delegate { };
 
         public static void Start()
         {

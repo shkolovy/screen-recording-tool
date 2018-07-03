@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Input;
@@ -21,6 +23,7 @@ namespace ScreenRecordingTool
 
 		private static bool _inited;
 		private bool _isCountdown;
+		private bool _isWindowCapturer;
 
 		private RecordingWindow _recordingWindow;
 
@@ -86,7 +89,7 @@ namespace ScreenRecordingTool
 
 		private void OnMouseAction(object sender, EventArgs e)
 		{
-			if (!IsVisible || IsRecording || _isCountdown)
+			if (!_isWindowCapturer || !IsVisible || IsRecording || _isCountdown)
 			{
 				return;
 			}
@@ -96,34 +99,15 @@ namespace ScreenRecordingTool
 				return;
 			}
 
-			IntPtr windowsPtr = WindowLocator.WindowFromPoint(p);
+			IEnumerable<IntPtr> wisibleWindows = WindowLocator.FindWindows();
+			IntPtr foundWindow = WindowLocator.WindowFromPoint(p);
+			IntPtr window = wisibleWindows.FirstOrDefault(w => w == foundWindow);
 
-			if (CaptureWindowPtr != windowsPtr)
+			if (window != null && window != CaptureWindowPtr)
 			{
-				const int maxChars = 256;
-				StringBuilder className = new StringBuilder(maxChars);
-
-				var handle = WindowLocator.GetForegroundWindow();
-
-				if (WindowLocator.GetClassName(handle, className, maxChars) > 0)
-				{
-					//Debug.WriteLine(className.ToString() + "+" + WindowLocator.IsDesktop(className.ToString()));
-					if (WindowLocator.IsDesktop(className.ToString()))
-					{
-						WindowLocator.MoveWindow(CaptureWindowPtr, 0, 0, (int)_workArea.Right, (int)_workArea.Bottom, true);
-					}
-					else if (className.ToString() == "NotifyIconOverflowWindow" || className.ToString() == "Shell_TrayWnd")
-					{
-						//ignore them
-						return;
-					}
-					else
-					{
-						WindowLocator.SetForegroundWindow(windowsPtr);
-						WindowLocator.GetWindowRect(windowsPtr, out WindowLocator.RECT rect);
-						WindowLocator.MoveWindow(CaptureWindowPtr, rect.Left, rect.Top, rect.Right - rect.Left, rect.Bottom - rect.Top, true);
-					}
-				}
+				WindowLocator.SetForegroundWindow(foundWindow);
+				WindowLocator.GetWindowRect(foundWindow, out WindowLocator.RECT rect);
+				WindowLocator.MoveWindow(CaptureWindowPtr, rect.Left, rect.Top, rect.Right - rect.Left, rect.Bottom - rect.Top, true);
 			}
 		}
 
@@ -166,7 +150,6 @@ namespace ScreenRecordingTool
 			StartBtn.Visibility = Visibility.Visible;
 			CloseBtn.Visibility = Visibility.Visible;
 			ResolutionLbl.Visibility = Visibility.Visible;
-			InfoLbl.Visibility = Visibility.Visible;
 			ToggleOverlay(true);
 			((App)Application.Current).HandleTrayItems(false);
 
@@ -185,8 +168,21 @@ namespace ScreenRecordingTool
 			StartBtn.Visibility = Visibility.Hidden;
 			CloseBtn.Visibility = Visibility.Hidden;
 			ResolutionLbl.Visibility = Visibility.Hidden;
-			InfoLbl.Visibility = Visibility.Hidden;
+			ToggleWindowCapturerMode(false);
 			ShowCountdown();
+		}
+
+		private void CaptureWindowBtn_OnClick(object sender, RoutedEventArgs e)
+		{
+			ToggleWindowCapturerMode(!_isWindowCapturer);
+		}
+
+		private void ToggleWindowCapturerMode(bool active)
+		{
+			CaptureWindowBtn.Content = active ? "Capture Window (on)" : "Capture Window (off)";
+			InfoLbl.Visibility = active ? Visibility.Visible : Visibility.Hidden;
+
+			_isWindowCapturer = active;
 		}
 
 		private void StartBtn_OnClick(object sender, RoutedEventArgs e)
