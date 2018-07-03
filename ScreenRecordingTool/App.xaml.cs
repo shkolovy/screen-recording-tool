@@ -132,7 +132,7 @@ namespace ScreenRecordingTool
 
 		public void About()
         {
-            MessageBox.Show("arshkolo :)");
+            Helpers.OpenFolder("Manual.docx");
         }
 
         public void Settings()

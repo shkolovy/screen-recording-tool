@@ -49,14 +49,5 @@ namespace ScreenRecordingTool.Properties {
                 return ((int)(this["Countdown"]));
             }
         }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("temp.avi")]
-        public string TempFile {
-            get {
-                return ((string)(this["TempFile"]));
-            }
-        }
     }
 }

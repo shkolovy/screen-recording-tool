@@ -150,6 +150,7 @@ namespace ScreenRecordingTool
 			StartBtn.Visibility = Visibility.Visible;
 			CloseBtn.Visibility = Visibility.Visible;
 			ResolutionLbl.Visibility = Visibility.Visible;
+			CaptureWindowBtn.Visibility = Visibility.Visible;
 			ToggleOverlay(true);
 			((App)Application.Current).HandleTrayItems(false);
 
@@ -168,6 +169,7 @@ namespace ScreenRecordingTool
 			StartBtn.Visibility = Visibility.Hidden;
 			CloseBtn.Visibility = Visibility.Hidden;
 			ResolutionLbl.Visibility = Visibility.Hidden;
+			CaptureWindowBtn.Visibility = Visibility.Hidden;
 			ToggleWindowCapturerMode(false);
 			ShowCountdown();
 		}

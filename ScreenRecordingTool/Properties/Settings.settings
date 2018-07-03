@@ -11,8 +11,5 @@
     <Setting Name="Countdown" Type="System.Int32" Scope="Application">
       <Value Profile="(Default)">3</Value>
     </Setting>
-    <Setting Name="TempFile" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">temp.avi</Value>
-    </Setting>
   </Settings>
 </SettingsFile>
