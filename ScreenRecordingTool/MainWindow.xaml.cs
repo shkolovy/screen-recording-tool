@@ -243,7 +243,7 @@ namespace ScreenRecordingTool
 
 		private void ToggleWindowCapturerMode(bool active)
 		{
-			CaptureWindowBtn.Content = active ? "✜ Capture Window (on)" : "✜ Capture Window (off)";
+			CaptureWindowBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString(active ? "#6EB1E1" : "#FFFFFC"));
 			InfoLbl.Visibility = active ? Visibility.Visible : Visibility.Hidden;
 
 			_isWindowCapturer = active;

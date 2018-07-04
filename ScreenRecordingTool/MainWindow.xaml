@@ -20,10 +20,13 @@
         >
 
 	<Grid>
-		<Button Name="CaptureWindowBtn" Content="✜ Capture Window (off)" HorizontalAlignment="Left" FontSize="11" Padding="10 0" Height="26"
-		        BorderThickness="0" Cursor="Hand" VerticalAlignment="Top" Foreground="WhiteSmoke" Margin="10" Click="CaptureWindowBtn_OnClick">
+		<Button Name="CaptureWindowBtn" Content="✜ Capture Window" HorizontalAlignment="Left" FontSize="11" Padding="10 0" Height="26"
+		         Cursor="Hand" VerticalAlignment="Top" Margin="10"
+		         Foreground="Black" BorderThickness="0"
+		         Click="CaptureWindowBtn_OnClick">
+			
 			<Button.Background>
-				<SolidColorBrush Color="CadetBlue" Opacity="0.8"></SolidColorBrush>
+				<SolidColorBrush Color="#FFFFFC" Opacity="0.8"></SolidColorBrush>
 			</Button.Background>
 		</Button>
 
@@ -33,7 +36,7 @@
 		        VerticalAlignment="Top" HorizontalAlignment="Right" Margin="10" Padding="10 0"
 		        BorderThickness="0" Cursor="Hand"
 		        FontSize="11" 
-		        Content="Hide window">
+		        Content="Hide">
 			<Button.Background>
 				<SolidColorBrush Color="#77B3D4" Opacity="0.8"></SolidColorBrush>
 			</Button.Background>
