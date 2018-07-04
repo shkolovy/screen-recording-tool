@@ -60,8 +60,7 @@
 
 		<TextBox Name="TextBox"  Background="#01000000" SpellCheck.IsEnabled="true" BorderBrush="#01000000" TextAlignment="Center" Margin="10"
 		         TextWrapping="Wrap" VerticalAlignment="Bottom" HorizontalAlignment="Stretch"
-		         FontSize="15" FontFamily="Verdana" Foreground="Red" FontWeight="Bold">
-			
+		         FontSize="15" FontFamily="Verdana" Foreground="Red" FontWeight="Bold" Visibility="Hidden">
 		</TextBox>
 	</Grid>
 	<Window.Background>

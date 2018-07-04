@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Media;
 using System.Windows.Threading;
+
 
 namespace ScreenRecordingTool
 {
@@ -40,17 +42,9 @@ namespace ScreenRecordingTool
 		private void DrawingBtn_Click(object sender, RoutedEventArgs e)
 		{
 			var mw = ((MainWindow) Application.Current.MainWindow);
-
-			if (!mw.IsDrawing)
-			{
-				ClearDrawingBtn.Visibility = Visibility.Visible;
-			}
-			else
-			{
-				ClearDrawingBtn.Visibility = Visibility.Hidden;
-			}
-
 			mw.ToggleDrawing(!mw.IsDrawing);
+			ClearDrawingBtn.Visibility = mw.IsDrawing ? Visibility.Visible : Visibility.Hidden;
+			DrawingBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString(mw.IsDrawing ? "#6EB1E1" : "#FFFFFC"));
 		}
 
 	    private void ClearDrawingBtn_Click(object sender, RoutedEventArgs e)
@@ -64,7 +58,7 @@ namespace ScreenRecordingTool
 	    {
 		    var mw = ((MainWindow)Application.Current.MainWindow);
 		    mw.ToggleText(!mw.IsText);
+		    TextBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString(mw.IsText ? "#6EB1E1" : "#FFFFFC"));
 	    }
-
 	}
 }

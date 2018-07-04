@@ -23,9 +23,9 @@
 					<SolidColorBrush Color="Red" Opacity="0.8"></SolidColorBrush>
 				</Button.Background>
 			</Button>
-	        <Button Name="TextBtn" Content="T" Padding="10 0" FontWeight="Bold" Margin="10 0 0 0" Cursor="Hand" Click="TextBtn_Click"></Button>
-			<Button Content="✎" Name="DrawingBtn" Padding="10 0" Margin="10 0 0 0" Cursor="Hand" Click="DrawingBtn_Click" ></Button>
-			<Button Name="ClearDrawingBtn" Content="✗" Visibility="Collapsed" Padding="10 0" Margin="10 0 0 0" Cursor="Hand" Click="ClearDrawingBtn_Click"></Button>
+			<Button Name="TextBtn" Content="T" Padding="10 0" FontWeight="Bold" Background="#FFFFFC" BorderBrush="#6EB1E1" Margin="10 0 0 0" Cursor="Hand" Click="TextBtn_Click"></Button>
+			<Button Content="✎" Name="DrawingBtn" Padding="10 0" Margin="10 0 0 0" Background="#FFFFFC" BorderBrush="#6EB1E1" Cursor="Hand" Click="DrawingBtn_Click" ></Button>
+			<Button Name="ClearDrawingBtn" Content="✗" Visibility="Collapsed" Background="#FFFFFC" BorderBrush="#6EB1E1" Padding="10 0" Margin="10 0 0 0" Cursor="Hand" Click="ClearDrawingBtn_Click"></Button>
 		</StackPanel>
     </Grid>
     <Window.Background>

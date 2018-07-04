@@ -80,6 +80,8 @@ namespace ScreenRecordingTool
 				_recordingWindow.Hide();
 				_recordingWindow.StopTimer();
 				_recordingWindow.ClearDrawingBtn.Visibility = Visibility.Hidden;
+				_recordingWindow.TextBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFFFFC"));
+				_recordingWindow.DrawingBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFFFFC"));
 			}
 		}
 
@@ -222,13 +224,13 @@ namespace ScreenRecordingTool
 			{
 				DrawingCnws.EditingMode = InkCanvasEditingMode.Ink;
 				DrawingCnws.UseCustomCursor = true;
-				DrawingCnws.Background = new SolidColorBrush((Color)System.Windows.Media.ColorConverter.ConvertFromString("#01000000"));
+				DrawingCnws.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#01000000"));
 			}
 			else
 			{
 				DrawingCnws.EditingMode = InkCanvasEditingMode.None;
 				DrawingCnws.UseCustomCursor = false;
-				DrawingCnws.Background = new SolidColorBrush((Color)System.Windows.Media.ColorConverter.ConvertFromString("#00000000"));
+				DrawingCnws.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#00000000"));
 			}
 
 			IsDrawing = show;
