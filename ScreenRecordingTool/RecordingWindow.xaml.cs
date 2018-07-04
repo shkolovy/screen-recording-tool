@@ -36,5 +36,35 @@ namespace ScreenRecordingTool
 		{
 			((App)Application.Current).Stop();
 		}
+
+		private void DrawingBtn_Click(object sender, RoutedEventArgs e)
+		{
+			var mw = ((MainWindow) Application.Current.MainWindow);
+
+			if (!mw.IsDrawing)
+			{
+				ClearDrawingBtn.Visibility = Visibility.Visible;
+			}
+			else
+			{
+				ClearDrawingBtn.Visibility = Visibility.Hidden;
+			}
+
+			mw.ToggleDrawing(!mw.IsDrawing);
+		}
+
+	    private void ClearDrawingBtn_Click(object sender, RoutedEventArgs e)
+	    {
+		    var mw = ((MainWindow)Application.Current.MainWindow);
+		    mw.ClearDrawing();
+		}
+
+
+	    private void TextBtn_Click(object sender, RoutedEventArgs e)
+	    {
+		    var mw = ((MainWindow)Application.Current.MainWindow);
+		    mw.ToggleText(!mw.IsText);
+	    }
+
 	}
 }

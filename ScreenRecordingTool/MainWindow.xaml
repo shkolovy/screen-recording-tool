@@ -12,7 +12,7 @@
         ResizeMode="CanResizeWithGrip"
         Margin="20"
         Name="Main"
-        
+        WindowStartupLocation="CenterScreen"
         BorderBrush="Red" BorderThickness="1"
         MouseLeftButtonDown="MouseLeftButton_OnDown"
         MouseLeftButtonUp="MouseLeftButton_OnUp"
@@ -20,13 +20,13 @@
         >
 
 	<Grid>
-		<Button Name="CaptureWindowBtn" Content="Capture Window (off)" HorizontalAlignment="Left" FontSize="11" Padding="10 0" Height="26"
+		<Button Name="CaptureWindowBtn" Content="✜ Capture Window (off)" HorizontalAlignment="Left" FontSize="11" Padding="10 0" Height="26"
 		        BorderThickness="0" Cursor="Hand" VerticalAlignment="Top" Foreground="WhiteSmoke" Margin="10" Click="CaptureWindowBtn_OnClick">
 			<Button.Background>
 				<SolidColorBrush Color="CadetBlue" Opacity="0.8"></SolidColorBrush>
 			</Button.Background>
 		</Button>
-		
+
 		<Label Name="ResolutionLbl" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0" Foreground="WhiteSmoke" FontSize="10" />
 
 		<Button Name="CloseBtn" Click="CloseImg_OnMouseDown" Height="26"
@@ -38,22 +38,33 @@
 				<SolidColorBrush Color="#77B3D4" Opacity="0.8"></SolidColorBrush>
 			</Button.Background>
 		</Button>
-		
+
 		<Button Name="StartBtn" Click="StartBtn_OnClick" Content="▶ Start" Cursor="Hand" 
                   Height="45" Foreground="White" FontSize="18" Padding="20 0" HorizontalAlignment="Center">
-            <Button.BorderBrush>
-                <SolidColorBrush></SolidColorBrush>
-            </Button.BorderBrush>
-            <Button.Background>
-                <SolidColorBrush Color="Red" Opacity="0.8"></SolidColorBrush>
-            </Button.Background>
-        </Button>
+			<Button.BorderBrush>
+				<SolidColorBrush></SolidColorBrush>
+			</Button.BorderBrush>
+			<Button.Background>
+				<SolidColorBrush Color="Red" Opacity="0.8"></SolidColorBrush>
+			</Button.Background>
+		</Button>
 
 		<Label Name="InfoLbl" Visibility="Hidden" Content="Click any window to capture it." HorizontalAlignment="Left" VerticalAlignment="Bottom" Foreground="WhiteSmoke" FontWeight="Bold" FontSize="20" FontFamily="Segoe UI Semilight Italic"></Label>
 
-        <Label Name="CounterLbl" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed" Foreground="Red" FontSize="70px" Content="3" />
-    </Grid>
-     <Window.Background>
-        <SolidColorBrush Color="White"></SolidColorBrush>
+		<Label Name="CounterLbl" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed" Foreground="Red" FontSize="70px" Content="3" />
+		<InkCanvas Name="DrawingCnws" Visibility="Hidden" >
+			<InkCanvas.Background>
+				<SolidColorBrush Color="#00000000"/>
+			</InkCanvas.Background>
+		</InkCanvas>
+
+		<TextBox Name="TextBox"  Background="#01000000" SpellCheck.IsEnabled="true" BorderBrush="#01000000" TextAlignment="Center" Margin="10"
+		         TextWrapping="Wrap" VerticalAlignment="Bottom" HorizontalAlignment="Stretch"
+		         FontSize="15" FontFamily="Verdana" Foreground="Red" FontWeight="Bold">
+			
+		</TextBox>
+	</Grid>
+	<Window.Background>
+		<SolidColorBrush Color="White"></SolidColorBrush>
     </Window.Background>
 </Window>

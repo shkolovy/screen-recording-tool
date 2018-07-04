@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Interop;
+using System.Windows.Media;
 using System.Windows.Threading;
+using Color = System.Windows.Media.Color;
 
 namespace ScreenRecordingTool
 {
@@ -28,6 +28,8 @@ namespace ScreenRecordingTool
 		private RecordingWindow _recordingWindow;
 
 		public bool IsRecording => _recorder.IsRecording;
+		public bool IsDrawing;
+		public bool IsText;
 
 		/// <inheritdoc />
 		public MainWindow()
@@ -42,6 +44,7 @@ namespace ScreenRecordingTool
 			InitializeComponent();
 			ToggleOverlay(true);
 			SetResolutionLbl();
+			SetCanvasPen();
 
 			WindowLocator.Start();
 			WindowLocator.MouseAction += new EventHandler(OnMouseAction);
@@ -76,6 +79,7 @@ namespace ScreenRecordingTool
 			{
 				_recordingWindow.Hide();
 				_recordingWindow.StopTimer();
+				_recordingWindow.ClearDrawingBtn.Visibility = Visibility.Hidden;
 			}
 		}
 
@@ -113,12 +117,22 @@ namespace ScreenRecordingTool
 
 		public void MouseLeftButton_OnUp(object sender, MouseEventArgs e)
 		{
+			if (IsRecording)
+			{
+				return;
+			}
+
 			if (Cursor == Cursors.ScrollAll)
 				Cursor = Cursors.Arrow;
 		}
 
 		public void MouseLeftButton_OnDown(object sender, MouseEventArgs e)
 		{
+			if (IsRecording)
+			{
+				return;
+			}
+
 			if (_isCountdown)
 			{
 				return;
@@ -151,11 +165,16 @@ namespace ScreenRecordingTool
 			CloseBtn.Visibility = Visibility.Visible;
 			ResolutionLbl.Visibility = Visibility.Visible;
 			CaptureWindowBtn.Visibility = Visibility.Visible;
+			DrawingCnws.Visibility = Visibility.Hidden;
+			TextBox.Text = "";
 			ToggleOverlay(true);
 			((App)Application.Current).HandleTrayItems(false);
-
-			Hide();
+			ClearDrawing();
+			ToggleDrawing(false);
+			DrawingCnws.Visibility = Visibility.Hidden;
+			ToggleText(false);
 			ToggleRecordingWindow(false);
+			Hide();
 		}
 
 		public void StartRecording()
@@ -174,6 +193,47 @@ namespace ScreenRecordingTool
 			ShowCountdown();
 		}
 
+		public void ClearDrawing()
+		{
+			DrawingCnws.Strokes.Clear();
+		}
+
+		public void ToggleText(bool show)
+		{
+			TextBox.Visibility = show ? Visibility.Visible : Visibility.Hidden;
+			TextBox.Text = "";
+			IsText = show;
+		}
+
+		private void SetCanvasPen()
+		{
+			DrawingCnws.DefaultDrawingAttributes.Width = 15;
+			DrawingCnws.DefaultDrawingAttributes.Height = 15;
+			DrawingCnws.DefaultDrawingAttributes.FitToCurve = true;
+			DrawingCnws.DefaultDrawingAttributes.IgnorePressure = true;
+			DrawingCnws.DefaultDrawingAttributes.IsHighlighter = true;
+			DrawingCnws.DefaultDrawingAttributes.Color = Color.FromArgb(128, 255, 255, 0);
+			DrawingCnws.Cursor = Cursors.Pen;
+		}
+
+		public void ToggleDrawing(bool show)
+		{
+			if (show)
+			{
+				DrawingCnws.EditingMode = InkCanvasEditingMode.Ink;
+				DrawingCnws.UseCustomCursor = true;
+				DrawingCnws.Background = new SolidColorBrush((Color)System.Windows.Media.ColorConverter.ConvertFromString("#01000000"));
+			}
+			else
+			{
+				DrawingCnws.EditingMode = InkCanvasEditingMode.None;
+				DrawingCnws.UseCustomCursor = false;
+				DrawingCnws.Background = new SolidColorBrush((Color)System.Windows.Media.ColorConverter.ConvertFromString("#00000000"));
+			}
+
+			IsDrawing = show;
+		}
+
 		private void CaptureWindowBtn_OnClick(object sender, RoutedEventArgs e)
 		{
 			ToggleWindowCapturerMode(!_isWindowCapturer);
@@ -181,7 +241,7 @@ namespace ScreenRecordingTool
 
 		private void ToggleWindowCapturerMode(bool active)
 		{
-			CaptureWindowBtn.Content = active ? "Capture Window (on)" : "Capture Window (off)";
+			CaptureWindowBtn.Content = active ? "✜ Capture Window (on)" : "✜ Capture Window (off)";
 			InfoLbl.Visibility = active ? Visibility.Visible : Visibility.Hidden;
 
 			_isWindowCapturer = active;
@@ -197,7 +257,7 @@ namespace ScreenRecordingTool
 			Hide();
 		}
 
-		private Rectangle GetRecordingCoordinates()
+		private System.Drawing.Rectangle GetRecordingCoordinates()
 		{
 			if (!WindowLocator.GetWindowRect(CaptureWindowPtr, out WindowLocator.RECT rect))
 			{
@@ -206,8 +266,7 @@ namespace ScreenRecordingTool
 
 			//not to show recording frame border
 			const int ignoredPixels = 3;
-			return new Rectangle(rect.Left + ignoredPixels, rect.Top + ignoredPixels, rect.Right - rect.Left - ignoredPixels * 2, rect.Bottom - rect.Top - ignoredPixels * 2);
-			//return new Position(rect.Top + ignoredPixels, rect.Bottom - ignoredPixels, rect.Left + ignoredPixels, rect.Right - ignoredPixels);
+			return new System.Drawing.Rectangle(rect.Left + ignoredPixels, rect.Top + ignoredPixels, rect.Right - rect.Left - ignoredPixels * 2, rect.Bottom - rect.Top - ignoredPixels * 2);
 		}
 
 		private void ShowCountdown()
@@ -232,6 +291,7 @@ namespace ScreenRecordingTool
 					((App)Application.Current).HandleTrayItems(true);
 
 					ToggleRecordingWindow(true);
+					DrawingCnws.Visibility = Visibility.Visible;
 
 					_recorder.Start(GetRecordingCoordinates());
 				}
