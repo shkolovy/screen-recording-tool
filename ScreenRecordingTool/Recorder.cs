@@ -21,7 +21,6 @@ namespace ScreenRecordingTool
 		private const int BIT_RATE = 1200000;
 		private const string FILE_CONTAINER = "mp4";
 
-		//yellow, half transparent
 		private Color cursorHighlightColor = Color.FromArgb(60, 252, 249, 90);
 		private const int CURSOR_HIGHLIGHT_DIAMETER = 60;
 

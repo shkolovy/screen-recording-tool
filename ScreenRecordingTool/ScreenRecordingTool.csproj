@@ -74,7 +74,6 @@
     <Compile Include="Constans.cs" />
     <Compile Include="Helpers.cs" />
     <Compile Include="KeyboardHook.cs" />
-    <Compile Include="Position.cs" />
     <Compile Include="Recorder.cs" />
     <Compile Include="RecordingWindow.xaml.cs">
       <DependentUpon>RecordingWindow.xaml</DependentUpon>
