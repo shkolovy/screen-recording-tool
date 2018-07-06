@@ -71,6 +71,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Constans.cs" />
     <Compile Include="Helpers.cs" />
     <Compile Include="KeyboardHook.cs" />
     <Compile Include="Position.cs" />

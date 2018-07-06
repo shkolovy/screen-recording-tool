@@ -16,6 +16,8 @@ namespace ScreenRecordingTool
 	/// </summary>
 	public partial class MainWindow : Window
 	{
+		private const int DRAWING_PEN_THINKNESS = 15;
+
 		private static Rect _workArea = SystemParameters.WorkArea;
 
 		private readonly Recorder _recorder;
@@ -209,13 +211,16 @@ namespace ScreenRecordingTool
 
 		private void SetCanvasPen()
 		{
-			DrawingCnws.DefaultDrawingAttributes.Width = 15;
-			DrawingCnws.DefaultDrawingAttributes.Height = 15;
+			DrawingCnws.DefaultDrawingAttributes.Width = DRAWING_PEN_THINKNESS;
+			DrawingCnws.DefaultDrawingAttributes.Height = DRAWING_PEN_THINKNESS;
 			DrawingCnws.DefaultDrawingAttributes.FitToCurve = true;
-			DrawingCnws.DefaultDrawingAttributes.IgnorePressure = true;
 			DrawingCnws.DefaultDrawingAttributes.IsHighlighter = true;
-			DrawingCnws.DefaultDrawingAttributes.Color = Color.FromArgb(128, 255, 255, 0);
 			DrawingCnws.Cursor = Cursors.Pen;
+		}
+
+		public void ChangeCanvasColor(Color color)
+		{
+			DrawingCnws.DefaultDrawingAttributes.Color = color;
 		}
 
 		public void ToggleDrawing(bool show)
@@ -224,13 +229,13 @@ namespace ScreenRecordingTool
 			{
 				DrawingCnws.EditingMode = InkCanvasEditingMode.Ink;
 				DrawingCnws.UseCustomCursor = true;
-				DrawingCnws.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#01000000"));
+				DrawingCnws.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString(Constans.CANVAS_COLOR));
 			}
 			else
 			{
 				DrawingCnws.EditingMode = InkCanvasEditingMode.None;
 				DrawingCnws.UseCustomCursor = false;
-				DrawingCnws.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#00000000"));
+				DrawingCnws.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString(Constans.CANVAS_TRANSPARENT_COLOR));
 			}
 
 			IsDrawing = show;
@@ -243,7 +248,7 @@ namespace ScreenRecordingTool
 
 		private void ToggleWindowCapturerMode(bool active)
 		{
-			CaptureWindowBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString(active ? "#6EB1E1" : "#FFFFFC"));
+			CaptureWindowBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString(active ? Constans.BTN_COLOR_ACTIVE : Constans.BTN_COLOR));
 			InfoLbl.Visibility = active ? Visibility.Visible : Visibility.Hidden;
 
 			_isWindowCapturer = active;

@@ -82,7 +82,7 @@ namespace ScreenRecordingTool
 	    public static extern bool IsWindow(IntPtr hWnd);
 
 	    [DllImport("user32.dll", CharSet = CharSet.Unicode)]
-	    private static extern int GetWindowTextLength(IntPtr hWnd);
+	    public static extern int GetWindowTextLength(IntPtr hWnd);
 
 		[DllImport("user32.dll")]
 	    public static extern bool IsWindowVisible(IntPtr hWnd);
@@ -90,7 +90,10 @@ namespace ScreenRecordingTool
 	    [DllImport("user32.dll")]
 	    public static extern WindowStyles GetWindowLong(IntPtr hWnd, GetWindowLongValue nIndex);
 
-	    [DllImport("user32.dll")]
+	    [DllImport("user32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
+	    public static extern int GetWindowText(IntPtr hWnd, System.Text.StringBuilder lpString, int nMaxCount);
+
+		[DllImport("user32.dll")]
 	    public static extern IntPtr GetWindow(IntPtr hWnd, GetWindowEnum uCmd);
 
 		public static IEnumerable<IntPtr> FindWindows()
