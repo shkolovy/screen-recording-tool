@@ -58,7 +58,11 @@ namespace ScreenRecordingTool
 
 		private void SetResolutionLbl()
 		{
-			ResolutionLbl.Content = $"{Math.Ceiling(Width)} ✕ {Math.Ceiling(Height)}";
+			if (CaptureWindowPtr != IntPtr.Zero)
+			{
+				var coordinates = GetRecordingCoordinates();
+				ResolutionLbl.Content = $"{coordinates.Width} ✕ {coordinates.Height}";
+			}
 		}
 
 		private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
