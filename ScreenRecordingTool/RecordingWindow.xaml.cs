@@ -45,12 +45,19 @@ namespace ScreenRecordingTool
 
         #region Drawing
 
+	    public void ResetControls()
+	    {
+		    ToggleBtn(false, RectangleBtn);
+		    ToggleBtn(false, DrawingBtn);
+		    ToggleBtn(false, TextBtn);
+		    DrawingColorsCombo.Visibility = Visibility.Hidden;
+        }
+
 	    private void RectangleBtn_Click(object sender, RoutedEventArgs e)
 	    {
 		    var mw = MainWindow;
 		    mw.ToggleText(false);
             mw.ToggleDrawing(false);
-            //ClearDrawingBtn.Visibility = Visibility.Hidden;
 		    DrawingColorsCombo.Visibility = Visibility.Hidden;
             mw.ToggleRectangleDrawing(!mw.IsRectangleDrawing);
 
@@ -67,7 +74,6 @@ namespace ScreenRecordingTool
 		    mw.ToggleText(false);
             mw.ToggleRectangleDrawing(false);
 		    mw.ToggleDrawing(!mw.IsDrawing);
-            //ClearDrawingBtn.Visibility = mw.IsDrawing ? Visibility.Visible : Visibility.Hidden;
 		    DrawingColorsCombo.Visibility = mw.IsDrawing ? Visibility.Visible : Visibility.Hidden;
             ToggleBtn(mw.IsDrawing, DrawingBtn);
 		    ToggleBtn(false, RectangleBtn);
@@ -109,12 +115,15 @@ namespace ScreenRecordingTool
 	    {
 		    var colors = new Dictionary<SolidColorBrush, Color> {
 			    {
+					// yellow
 				    new SolidColorBrush(Color.FromRgb(255, 255, 60)) , Color.FromArgb(128, 255, 255, 60)
 			    },
 			    {
+					// blue
 				    new SolidColorBrush(Color.FromRgb(30, 180, 255)) , Color.FromArgb(128, 30, 180, 255)
 			    },
 			    {
+					// red
 				    new SolidColorBrush(Color.FromRgb(255, 30, 30)) , Color.FromArgb(128, 255, 30, 30)
 			    }};
 

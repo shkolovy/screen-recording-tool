@@ -91,9 +91,7 @@ namespace ScreenRecordingTool
 			{
 				_recordingWindow.Hide();
 				_recordingWindow.StopTimer();
-				//_recordingWindow.ClearDrawingBtn.Visibility = Visibility.Hidden;
-				_recordingWindow.TextBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFFFFC"));
-				_recordingWindow.DrawingBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFFFFC"));
+				_recordingWindow.ResetControls();
 			}
 		}
 
@@ -177,8 +175,12 @@ namespace ScreenRecordingTool
 			((App)Application.Current).HandleTrayItems(false);
 			ClearDrawing();
 			ToggleDrawing(false);
-			DrawingCnws.Visibility = Visibility.Hidden;
 			ToggleText(false);
+			ToggleRectangleDrawing(false);
+
+
+            DrawingCnws.Visibility = Visibility.Hidden;
+			
 			ToggleRecordingWindow(false);
 			Hide();
 		}
