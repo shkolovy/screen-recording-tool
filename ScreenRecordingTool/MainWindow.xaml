@@ -55,17 +55,27 @@
 		<Label Name="InfoLbl" Visibility="Hidden" Content="Click any window to capture it." HorizontalAlignment="Left" VerticalAlignment="Bottom" Foreground="WhiteSmoke" FontWeight="Bold" FontSize="20" FontFamily="Segoe UI Semilight Italic"></Label>
 
 		<Label Name="CounterLbl" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed" Foreground="Red" FontSize="70px" Content="3" />
-		<InkCanvas Name="DrawingCnws" Visibility="Hidden" >
+		<InkCanvas Name="DrawingCnws" Visibility="Hidden"
+		           MouseDown="DrawingCnws_MouseDown" MouseMove="DrawingCnws_MouseMove" MouseUp="DrawingCnws_MouseUp">
 			<InkCanvas.Background>
 				<SolidColorBrush Color="#00000000"/>
 			</InkCanvas.Background>
 		</InkCanvas>
 
-		<TextBox Name="TextBox"  Background="#01000000" SpellCheck.IsEnabled="true" BorderBrush="#01000000" TextAlignment="Center" Margin="10"
+		<!--<TextBox Name="TextBox"  Background="#01000000" SpellCheck.IsEnabled="true" BorderBrush="#01000000" TextAlignment="Center" Margin="10"
 		         TextWrapping="Wrap" VerticalAlignment="Bottom" HorizontalAlignment="Stretch"
 		         FontSize="15" FontFamily="Verdana" Foreground="Red" FontWeight="Bold" Visibility="Hidden">
-		</TextBox>
-	</Grid>
+		</TextBox>-->
+
+        <StackPanel Visibility="Hidden" Name="TextPanel" Margin="0 0 0 0" Orientation="Horizontal" VerticalAlignment="Top">
+            <Border BorderThickness="4" BorderBrush="White" CornerRadius="12" Padding="0"
+	                    HorizontalAlignment="Center" VerticalAlignment="Center">
+                <TextBox Name="PopupMessageBox" Background="White" FontSize="15" FontFamily="Verdana" Padding="5" TextAlignment="Center" SpellCheck.IsEnabled="true"
+                         Foreground="Red" FontWeight="Bold" AcceptsReturn="True"  TextWrapping="Wrap"
+                         BorderThickness="0" VerticalAlignment="Center" Text="" HorizontalAlignment="Stretch" />
+            </Border>
+        </StackPanel>
+    </Grid>
 	<Window.Background>
 		<SolidColorBrush Color="White"></SolidColorBrush>
     </Window.Background>

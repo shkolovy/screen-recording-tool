@@ -23,6 +23,87 @@ namespace ScreenRecordingTool
 	        BindColorPicker();
         }
 
+        public void StartTimer()
+        {
+            var time = TimeSpan.FromSeconds(0);
+            TimerLbl.Content = time;
+            _timer = new DispatcherTimer(new TimeSpan(0, 0, 1), DispatcherPriority.Background, (s, e) => {
+                time = time.Add(TimeSpan.FromSeconds(1));
+                TimerLbl.Content = time.ToString();
+            }, App.Dispatcher);
+        }
+
+        public void StopTimer()
+        {
+            _timer.Stop();
+        }
+
+		private void Stop_Click(object sender, RoutedEventArgs e)
+		{
+			App.Stop();
+		}
+
+        #region Drawing
+
+	    private void RectangleBtn_Click(object sender, RoutedEventArgs e)
+	    {
+		    var mw = MainWindow;
+		    mw.ToggleText(false);
+            mw.ToggleDrawing(false);
+            //ClearDrawingBtn.Visibility = Visibility.Hidden;
+		    DrawingColorsCombo.Visibility = Visibility.Hidden;
+            mw.ToggleRectangleDrawing(!mw.IsRectangleDrawing);
+
+		    ToggleBtn(mw.IsRectangleDrawing, RectangleBtn);
+		    ToggleBtn(false, DrawingBtn);
+		    ToggleBtn(false, TextBtn);
+
+            MainWindow.ClearDrawing();
+        }
+
+	    private void DrawingBtn_Click(object sender, RoutedEventArgs e)
+	    {
+		    var mw = MainWindow;
+		    mw.ToggleText(false);
+            mw.ToggleRectangleDrawing(false);
+		    mw.ToggleDrawing(!mw.IsDrawing);
+            //ClearDrawingBtn.Visibility = mw.IsDrawing ? Visibility.Visible : Visibility.Hidden;
+		    DrawingColorsCombo.Visibility = mw.IsDrawing ? Visibility.Visible : Visibility.Hidden;
+            ToggleBtn(mw.IsDrawing, DrawingBtn);
+		    ToggleBtn(false, RectangleBtn);
+		    ToggleBtn(false, TextBtn);
+
+            MainWindow.ClearDrawing();
+        }
+
+	    private void TextBtn_Click(object sender, RoutedEventArgs e)
+	    {
+		    var mw = MainWindow;
+		    mw.ToggleRectangleDrawing(false);
+		    mw.ToggleDrawing(false);
+            mw.ToggleText(!mw.IsText);
+		    DrawingColorsCombo.Visibility = Visibility.Hidden;
+            ToggleBtn(mw.IsText, TextBtn);
+		    ToggleBtn(false, RectangleBtn);
+		    ToggleBtn(false, DrawingBtn);
+
+		    MainWindow.ClearDrawing();
+        }
+
+        private void ClearDrawingBtn_Click(object sender, RoutedEventArgs e)
+	    {
+		    MainWindow.ClearDrawing();
+	    }
+
+	    private void DrawingColorsCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
+	    {
+		    var selectedItem = (KeyValuePair<SolidColorBrush, Color>?)(sender as ComboBox).SelectedItem;
+
+		    if (selectedItem == null)
+			    return;
+
+		    MainWindow.ChangeCanvasColor(selectedItem.Value.Value);
+	    }
 
 	    private void BindColorPicker()
 	    {
@@ -39,59 +120,30 @@ namespace ScreenRecordingTool
 
 		    DrawingColorsCombo.ItemsSource = colors;
 		    DrawingColorsCombo.SelectedValue = colors.FirstOrDefault();
-		}
-
-        public void StartTimer()
-        {
-            var time = TimeSpan.FromSeconds(0);
-            TimerLbl.Content = time;
-            _timer = new DispatcherTimer(new TimeSpan(0, 0, 1), DispatcherPriority.Background, (s, e) => {
-                time = time.Add(TimeSpan.FromSeconds(1));
-                TimerLbl.Content = time.ToString();
-            }, Application.Current.Dispatcher);
-        }
-
-        public void StopTimer()
-        {
-            _timer.Stop();
-        }
-
-		private void Stop_Click(object sender, RoutedEventArgs e)
-		{
-			((App)Application.Current).Stop();
-		}
-
-		private void DrawingBtn_Click(object sender, RoutedEventArgs e)
-		{
-			var mw = ((MainWindow) Application.Current.MainWindow);
-			mw.ToggleDrawing(!mw.IsDrawing);
-			ClearDrawingBtn.Visibility = mw.IsDrawing ? Visibility.Visible : Visibility.Hidden;
-			DrawingBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString(mw.IsDrawing ? Constans.BTN_COLOR_ACTIVE : Constans.BTN_COLOR));
-		}
-
-	    private void ClearDrawingBtn_Click(object sender, RoutedEventArgs e)
-	    {
-		    var mw = ((MainWindow)Application.Current.MainWindow);
-		    mw.ClearDrawing();
-		}
-
-
-	    private void TextBtn_Click(object sender, RoutedEventArgs e)
-	    {
-		    var mw = ((MainWindow)Application.Current.MainWindow);
-		    mw.ToggleText(!mw.IsText);
-		    TextBtn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString(mw.IsText ? Constans.BTN_COLOR_ACTIVE : Constans.BTN_COLOR));
 	    }
 
-		private void DrawingColorsCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
-		{
-			var mw = ((MainWindow)Application.Current.MainWindow);
-			var selectedItem = (KeyValuePair<SolidColorBrush, Color>?)(sender as ComboBox).SelectedItem;
+	    private void ToggleBtn(bool ative, Button btn)
+	    {
+		    btn.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString(ative ? Constans.BTN_COLOR_ACTIVE : Constans.BTN_COLOR));
+	    }
 
-			if (selectedItem == null)
-				return;
+        #endregion
 
-			mw.ChangeCanvasColor(selectedItem.Value.Value);
-		}
-	}
+
+	    private App App
+	    {
+		    get
+		    {
+			    return (App) Application.Current;
+		    }
+	    }
+
+	    private MainWindow MainWindow
+	    {
+		    get
+		    {
+			    return ((MainWindow) Application.Current.MainWindow);
+		    }
+	    }
+    }
 }

@@ -39,7 +39,13 @@ namespace ScreenRecordingTool
 
 			CreateInputDirectoryIfNotExists();
 
-			_watermarkImage = Image.FromFile(Properties.Settings.Default.WatermarkPath);
+			try
+			{
+				_watermarkImage = Image.FromFile(Properties.Settings.Default.WatermarkPath);
+            }
+			catch (FileNotFoundException e)
+			{
+			}
 
 			_videoSource = new ScreenCaptureStream(_position);
 			_videoSource.NewFrame += CaptureFrame;
@@ -129,6 +135,11 @@ namespace ScreenRecordingTool
 
 		private void DrawWatermark(Graphics graphics, int width, int height)
 		{
+			if (_watermarkImage == null)
+			{
+				return;
+			}
+
 			//move it to the right bottom corner
 			var x = width - _watermarkImage.Width - WATERMARK_PADDING;
 			var y = height - _watermarkImage.Height - WATERMARK_PADDING;
