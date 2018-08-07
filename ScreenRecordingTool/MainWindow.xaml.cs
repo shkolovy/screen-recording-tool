@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Ink;
@@ -19,7 +21,7 @@ namespace ScreenRecordingTool
 	{
 		private const int DRAWING_PEN_THINKNESS = 15;
 
-		private readonly Recorder _recorder;
+        private readonly Recorder _recorder;
 		private DispatcherTimer _timer;
 
 		private static bool _inited;
@@ -155,7 +157,7 @@ namespace ScreenRecordingTool
 			Main.Background.Opacity = show ? 0.2 : 0;
 		}
 
-		public void StopRecording()
+		public async Task StopRecording()
 		{
 			if (!_recorder.IsRecording)
 			{
@@ -164,7 +166,7 @@ namespace ScreenRecordingTool
 
 			_recorder.Stop();
 
-			Main.ResizeMode = ResizeMode.CanResizeWithGrip;
+            Main.ResizeMode = ResizeMode.CanResizeWithGrip;
 			StartBtn.Visibility = Visibility.Visible;
 			CloseBtn.Visibility = Visibility.Visible;
 			ResolutionLbl.Visibility = Visibility.Visible;
@@ -177,12 +179,11 @@ namespace ScreenRecordingTool
 			ToggleDrawing(false);
 			ToggleText(false);
 			ToggleRectangleDrawing(false);
-
-
             DrawingCnws.Visibility = Visibility.Hidden;
-			
 			ToggleRecordingWindow(false);
 			Hide();
+
+			await _recorder.FinishRecording();
 		}
 
 		public void StartRecording()
@@ -291,16 +292,17 @@ namespace ScreenRecordingTool
 				CounterLbl.Content = time.TotalSeconds;
 				if (time == TimeSpan.Zero)
 				{
-					_timer.Stop();
-					CounterLbl.Visibility = Visibility.Hidden;
-					ToggleOverlay(false);
 					_isCountdown = false;
+                    _timer.Stop();
+                    CounterLbl.Visibility = Visibility.Collapsed;
+                    ToggleOverlay(false);
 					((App)Application.Current).HandleTrayItems(true);
-
+					
 					ToggleRecordingWindow(true);
 					DrawingCnws.Visibility = Visibility.Visible;
 
-					_recorder.Start(GetRecordingCoordinates());
+					var coordinates = GetRecordingCoordinates();
+					_recorder.Start(coordinates);
 				}
 				else
 				{
@@ -329,7 +331,6 @@ namespace ScreenRecordingTool
 				_rectangleStartPosition = Mouse.GetPosition(DrawingCnws);
             }
 		}
-
 
 		private void ToggleDrawingIncCanvas(bool active)
 		{

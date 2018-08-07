@@ -4,7 +4,6 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using System.Windows.Threading;
 
 
 namespace ScreenRecordingTool
@@ -14,28 +13,27 @@ namespace ScreenRecordingTool
     /// </summary>
     public partial class RecordingWindow : Window
     {
-        DispatcherTimer _timer;
+	    private StopWatch _stopWatch;
 
         public RecordingWindow()
         {
             InitializeComponent();
 	        StopBtn.Focusable = false;
 	        BindColorPicker();
+	        _stopWatch = new StopWatch((TimeSpan time) => {
+		        TimerLbl.Content = time.ToString();
+	        });
         }
 
         public void StartTimer()
         {
-            var time = TimeSpan.FromSeconds(0);
-            TimerLbl.Content = time;
-            _timer = new DispatcherTimer(new TimeSpan(0, 0, 1), DispatcherPriority.Background, (s, e) => {
-                time = time.Add(TimeSpan.FromSeconds(1));
-                TimerLbl.Content = time.ToString();
-            }, App.Dispatcher);
+	        _stopWatch.Start();
         }
 
         public void StopTimer()
         {
-            _timer.Stop();
+	        _stopWatch.Stop();
+			_stopWatch.Reset();
         }
 
 		private void Stop_Click(object sender, RoutedEventArgs e)

@@ -155,9 +155,10 @@ namespace ScreenRecordingTool
             }
         }
 
-        public void Stop()
+        public async void Stop()
         {
-            ((MainWindow)Current.MainWindow).StopRecording();
+	        ShowBalloonMessage("Your video is encoding ...");
+            await ((MainWindow)Current.MainWindow).StopRecording();
             ShowBalloonMessage("Your video is ready.");
 	        Helpers.OpenFolder(ScreenRecordingTool.Properties.Settings.Default.SaveToPath);
 		}
