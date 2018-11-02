@@ -31,7 +31,7 @@ namespace ScreenRecordingTool.Recording
             var coverProcessor = new FfmpegProcessor(coverProcessorArgs);
 	        coverProcessor.WaitForExit();
 
-            var mergeCoverProcessorArgs = $"-i {_options.Path}\\{TEMP_COVER_VID} -i {_options.FullPath} -filter_complex \"[0:v]fade = type =out:duration = 0.5:start_time = 1.5,setpts = PTS - STARTPTS[v0]; [1:v]fade = type =in:duration = 0.5:start_time = 0, setpts=PTS-STARTPTS[v1]; [v0] [v1] concat=n=2:v=1[v]\" -map \"[v]\" -pix_fmt yuv420p -preset veryslow -y {FileWithCover}";
+            var mergeCoverProcessorArgs = $"-i {_options.Path}\\{TEMP_COVER_VID} -i {_options.FullPath} -filter_complex \"[0:v]fade = type =out:duration = 0.5:start_time = 1.5,setpts = PTS - STARTPTS[v0]; [1:v]fade = type =in:duration = 0.5:start_time = 0, setpts=PTS-STARTPTS[v1]; [v0] [v1] concat=n=2:v=1[v]\" -map \"[v]\" -pix_fmt yuv420p -preset medium -y {FileWithCover}";
             var mergeCoverProcessor  = new FfmpegProcessor(mergeCoverProcessorArgs);
 	        mergeCoverProcessor.WaitForExit();
         }

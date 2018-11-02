@@ -23,7 +23,7 @@ namespace ScreenRecordingTool
             if (Process.GetProcessesByName(Process.GetCurrentProcess().ProcessName).Length > 1)
             {
                 MessageBox.Show("It's already running. Just check it in the tray");
-                Application.Current.Shutdown();
+                Current.Shutdown();
                 return;
             }
 
@@ -168,8 +168,8 @@ namespace ScreenRecordingTool
 	        _trayIcon.Icon = null;
 			Application.Current.Shutdown();
 
-	        this._keyboardhook.KeyUp -= KeyboardHook_KeyUp;
-	        this._keyboardhook.Dispose();
+	        _keyboardhook.KeyUp -= KeyboardHook_KeyUp;
+	        _keyboardhook.Dispose();
 		}
     }
 }
