@@ -20,7 +20,7 @@ namespace ScreenRecordingTool
 	{
 		private const int DRAWING_PEN_THINKNESS = 15;
 
-        private readonly Recorder _recorder;
+		private readonly Recorder _recorder;
 		private DispatcherTimer _timer;
 
 		private static bool _inited;
@@ -34,7 +34,7 @@ namespace ScreenRecordingTool
 		private Point _rectangleEndPosition;
 		private Stroke _lastRectangle;
 
-        public bool IsRecording => _recorder.IsRecording;
+		public bool IsRecording => _recorder.IsRecording;
 
 		public bool IsDrawing { get; private set; }
 
@@ -42,8 +42,8 @@ namespace ScreenRecordingTool
 
 		public bool IsRectangleDrawing { get; private set; }
 
-        /// <inheritdoc />
-        public MainWindow()
+		/// <inheritdoc />
+		public MainWindow()
 		{
 			// to avoid double initialization
 			if (_inited)
@@ -165,7 +165,7 @@ namespace ScreenRecordingTool
 
 			_recorder.Stop();
 
-            Main.ResizeMode = ResizeMode.CanResizeWithGrip;
+			Main.ResizeMode = ResizeMode.CanResizeWithGrip;
 			StartBtn.Visibility = Visibility.Visible;
 			CloseBtn.Visibility = Visibility.Visible;
 			ResolutionLbl.Visibility = Visibility.Visible;
@@ -178,7 +178,7 @@ namespace ScreenRecordingTool
 			ToggleDrawing(false);
 			ToggleText(false);
 			ToggleRectangleDrawing(false);
-            DrawingCnws.Visibility = Visibility.Hidden;
+			DrawingCnws.Visibility = Visibility.Hidden;
 			ToggleRecordingWindow(false);
 			Hide();
 
@@ -201,6 +201,17 @@ namespace ScreenRecordingTool
 			ShowCountdown();
 		}
 
+		public void PauseResumeRecording()
+		{
+			if (!_recorder.IsRecording)
+			{
+				return;
+			}
+
+			_recorder.PauseResume();
+		}
+
+
 		public void ClearDrawing()
 		{
 			DrawingCnws.Strokes.Clear();
@@ -216,11 +227,11 @@ namespace ScreenRecordingTool
 			DrawingCnws.UseCustomCursor = show;
 
 			ToggleDrawingIncCanvas(show);
-        }
+		}
 
 		private void SetCanvasPen()
 		{
-            DrawingCnws.DefaultDrawingAttributes.Width = DRAWING_PEN_THINKNESS;
+			DrawingCnws.DefaultDrawingAttributes.Width = DRAWING_PEN_THINKNESS;
 			DrawingCnws.DefaultDrawingAttributes.Height = DRAWING_PEN_THINKNESS;
 			DrawingCnws.DefaultDrawingAttributes.FitToCurve = false;
 			DrawingCnws.DefaultDrawingAttributes.IsHighlighter = true;
@@ -292,11 +303,11 @@ namespace ScreenRecordingTool
 				if (time == TimeSpan.Zero)
 				{
 					_isCountdown = false;
-                    _timer.Stop();
-                    CounterLbl.Visibility = Visibility.Collapsed;
-                    ToggleOverlay(false);
+					_timer.Stop();
+					CounterLbl.Visibility = Visibility.Collapsed;
+					ToggleOverlay(false);
 					((App)Application.Current).HandleTrayItems(true);
-					
+
 					ToggleRecordingWindow(true);
 					DrawingCnws.Visibility = Visibility.Visible;
 
@@ -320,36 +331,36 @@ namespace ScreenRecordingTool
 			DrawingCnws.EditingMode = InkCanvasEditingMode.None;
 			DrawingCnws.UseCustomCursor = show;
 			ToggleDrawingIncCanvas(show);
-        }
+		}
 
-        private void DrawingCnws_MouseDown(object sender, MouseButtonEventArgs e)
+		private void DrawingCnws_MouseDown(object sender, MouseButtonEventArgs e)
 		{
 			if (IsRectangleDrawing)
 			{
 				_isRectangle = true;
 				_rectangleStartPosition = Mouse.GetPosition(DrawingCnws);
-            }
+			}
 		}
 
 		private void ToggleDrawingIncCanvas(bool active)
 		{
 			DrawingCnws.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString(active ? Constans.CANVAS_COLOR : Constans.CANVAS_TRANSPARENT_COLOR));
-        }
+		}
 
 		private void DrawingCnws_MouseUp(object sender, MouseButtonEventArgs e)
 		{
 			if (IsRectangleDrawing)
 			{
 				_isRectangle = false;
-            }
-			else if(IsText)
+			}
+			else if (IsText)
 			{
 				TextPanel.Visibility = Visibility.Visible;
 				var p = Mouse.GetPosition(DrawingCnws);
 				PopupMessageBox.Text = "";
 				PopupMessageBox.Focus();
 				TextPanel.Margin = new Thickness(p.X, p.Y, 0, 0);
-            }
+			}
 		}
 
 		private void DrawingCnws_MouseMove(object sender, MouseEventArgs e)
@@ -388,7 +399,7 @@ namespace ScreenRecordingTool
 			if (_lastRectangle != null)
 			{
 				DrawingCnws.Strokes.Remove(_lastRectangle);
-            }
+			}
 		}
 
 		private IntPtr CaptureWindowPtr
@@ -398,6 +409,6 @@ namespace ScreenRecordingTool
 				return new WindowInteropHelper(this).Handle;
 			}
 		}
-    }
+	}
 }
 

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ScreenRecordingTool
 {
-	public sealed class VideoWriter: IDisposable
+	public sealed class VideoWriter : IDisposable
 	{
 		private NamedPipeServerStream _ffmpegStream;
 		private FfmpegProcessor _ffmpegProcess;
@@ -27,8 +27,8 @@ namespace ScreenRecordingTool
 
 		private void StartFfmpegProcess(VideoRecordingOptions videoRecordingOptions)
 		{
-			var inputArgs = $"-thread_queue_size 512 -use_wallclock_as_timestamps 1 -f rawvideo -pix_fmt rgb32 -video_size {videoRecordingOptions.Width}x{videoRecordingOptions.Height} -i {pipePrefix}{pipeName}";
-			var outputArgs = $"-vcodec libx264 -crf 15 -pix_fmt yuv420p -preset medium -r {videoRecordingOptions.FrameRate} -y {Path.Combine(videoRecordingOptions.Path, videoRecordingOptions.FileName)}";
+			var inputArgs = $"-thread_queue_size 512 -framerate {videoRecordingOptions.FrameRate} -f rawvideo -pix_fmt rgb32 -video_size {videoRecordingOptions.Width}x{videoRecordingOptions.Height} -i {pipePrefix}{pipeName}";
+			var outputArgs = $"-vcodec libx264 -crf 15 -pix_fmt yuv420p -preset ultrafast -r {videoRecordingOptions.FrameRate} -y {Path.Combine(videoRecordingOptions.Path, videoRecordingOptions.FileName)}";
 
 			_ffmpegProcess = new FfmpegProcessor($"{inputArgs} {outputArgs}");
 		}

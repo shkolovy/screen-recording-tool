@@ -10,11 +10,11 @@ namespace ScreenRecordingTool
 		private const string FILE_CONTAINER = "mp4";
 		private const int FRAME_RATE = 10;
 
-        private VideoRecording _videoRecording;
+		private VideoRecording _videoRecording;
 
 		public bool IsRecording => _videoRecording != null && _videoRecording.IsRecording;
 
-        public Recorder()
+		public Recorder()
 		{
 		}
 
@@ -39,14 +39,14 @@ namespace ScreenRecordingTool
 				Path = Properties.Settings.Default.SaveToPath,
 				Name = $"{DateTime.Now:yyyy-MM-dd-HH-mm-ss}",
 				FileContainer = FILE_CONTAINER
-            };
+			};
 
 			CreateInputDirectoryIfNotExists(options.Path);
 
-            _videoRecording = new VideoRecording(options);
+			_videoRecording = new VideoRecording(options);
 
-            _videoRecording.Start();
-        }
+			_videoRecording.Start();
+		}
 
 		public void Stop()
 		{
@@ -56,7 +56,7 @@ namespace ScreenRecordingTool
 			}
 
 			_videoRecording.StopCapturing();
-        }
+		}
 
 		public async Task FinishRecording()
 		{
@@ -71,16 +71,26 @@ namespace ScreenRecordingTool
 			var coverWriter = new CoverWriter(_videoRecording.VideoRecordingOptions);
 			coverWriter.Write();
 			coverWriter.Dispose();
-        }
+		}
 
-        private void CreateInputDirectoryIfNotExists(string path)
-        {
-            bool directoryExists = Directory.Exists(path);
+		public void PauseResume()
+		{
+			if (!_videoRecording.IsRecording)
+			{
+				throw new Exception("Is not recording");
+			}
 
-            if (!directoryExists)
-            {
-                Directory.CreateDirectory(path);
-            }
-        }
-    }
+			_videoRecording.PauseResume();
+		}
+
+		private void CreateInputDirectoryIfNotExists(string path)
+		{
+			bool directoryExists = Directory.Exists(path);
+
+			if (!directoryExists)
+			{
+				Directory.CreateDirectory(path);
+			}
+		}
+	}
 }

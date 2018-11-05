@@ -5,9 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ScreenRecordingTool"
         mc:Ignorable="d"
-        Title="RecordingWindow" Height="30" Width="450" 
-        ShowInTaskbar="False" 
-        AllowsTransparency="True" 
+        Title="RecordingWindow" Height="30" Width="450"
+        ShowInTaskbar="False"
+        AllowsTransparency="True"
         Topmost="True" WindowStyle="None"
         ResizeMode="NoResize">
     <Grid>
@@ -15,7 +15,15 @@
             <Image Source="Images/recording.png" Width="12" Height="12" VerticalAlignment="Center" />
             <Label Content="REC" Foreground="White" FontSize="14" FontWeight="Bold" VerticalAlignment="Center" />
             <Label Name="TimerLbl" Foreground="Red" FontSize="14" VerticalAlignment="Center" />
-			<Button Name="StopBtn" Content="■ Stop Recording" Padding="10 0" Foreground="AliceBlue" Cursor="Hand" FontSize="12" Click="Stop_Click">
+			<Button Name="PauseBtn" Width="35" Content="❚❚" Padding="10 0" Margin="0 0 10 0" Foreground="AliceBlue" Cursor="Hand" FontSize="12" Click="Pause_Click">
+				<Button.BorderBrush>
+					<SolidColorBrush></SolidColorBrush>
+				</Button.BorderBrush>
+				<Button.Background>
+					<SolidColorBrush Color="Red" Opacity="0.8"></SolidColorBrush>
+				</Button.Background>
+			</Button>
+			<Button Name="StopBtn" Content="■ Stop" Padding="10 0" Foreground="AliceBlue" Cursor="Hand" FontSize="12" Click="Stop_Click">
 				<Button.BorderBrush>
 					<SolidColorBrush></SolidColorBrush>
 				</Button.BorderBrush>
